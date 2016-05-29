@@ -3,12 +3,17 @@
 Selenium port: 4444
 VNC password: selenium
 VNC port: 5901
+SSH port: 2222
+
+SSH is for port forwarding. If your web server is unreachable from the 
+selenium server then you can do a port forward via ssh to make it 
+accessible.
 
 Run:
 
 ```sh
 # create container for the first time
-docker create -p 4444:4444 -p 5901:5901 --name selenium martinsbalodis/docker-selenium
+docker create -p 4444:4444 -p 5901:5901 -p 2222:22 --name selenium martinsbalodis/docker-selenium
 
 # start the container when you need it
 docker start selenium

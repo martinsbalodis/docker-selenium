@@ -11,7 +11,7 @@ RUN apt-get update && \
 apt-get upgrade -y && \
 apt-get -y install wget openjdk-8-jre-headless xfonts-100dpi xfonts-75dpi \
 xfonts-scalable xfonts-cyrillic tightvncserver supervisor expect \
-firefox fonts-ipafont-gothic xfonts-scalable && \
+firefox fonts-ipafont-gothic xfonts-scalable openssh-server && \
 mkdir /opt/selenium && \
 wget http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.0.jar -O /opt/selenium/selenium-server-standalone.jar && \
 expect -c 'set timeout 3;spawn /usr/bin/vncpasswd;expect "*?assword:*";send -- "selenium\r";expect "*?erify:*";send -- "selenium\r";expect "*?view-only password*";send -- "n\r";send -- "\r";expect eof' && \
@@ -19,15 +19,16 @@ apt-get remove -y --purge wget expect && \
 apt-get autoremove -y && \
 apt-get clean && \
 apt-get autoclean && \
-rm -rf /var/lib/apt/lists/*
+rm -rf /var/lib/apt/lists/* && \
+touch /root/.xsession && \
+mkdir -p /var/run/sshd && \
+sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config && \
+sed -i 's/^(session\s+)required(\s+pam_loginuid.so)$/$1optional$2/g' /etc/pam.d/sshd
 
-# vnc server startup script
-ADD start-vncserver.sh /start-vncserver.sh
-
-# Supervisor Config
-ADD supervisor-conf.d /etc/supervisor/conf.d
+# configuration and startup scripts
+ADD fs /
 
 # Expose Ports
-EXPOSE 4444 5901
+EXPOSE 4444 5901 22
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
