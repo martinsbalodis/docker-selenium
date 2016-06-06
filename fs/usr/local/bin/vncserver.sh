@@ -18,6 +18,9 @@ function kill_app(){
 }
 trap "kill_app" SIGINT SIGTERM
 
+# remove a lock file that might block startup of the vnc server
+rm -rf /tmp/.X1-lock
+
 # Launch daemon
 $command
 sleep 2
