@@ -20,6 +20,7 @@ trap "kill_app" SIGINT SIGTERM
 
 # remove a lock file that might block startup of the vnc server
 rm -rf /tmp/.X1-lock
+rm -rf /tmp/.X11-unix
 
 # Launch daemon
 $command
