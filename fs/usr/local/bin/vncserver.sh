@@ -9,7 +9,7 @@ export USER
 
 # Setting pidfile + command to execute
 pidfile="/root/.vnc/*:1.pid"
-command="/usr/bin/vncserver :1 -geometry 1280x800 -depth 24"
+command="/usr/bin/vncserver :1 -geometry 1440x960 -depth 24"
 
 # Proxy signals
 function kill_app(){
